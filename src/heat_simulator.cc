@@ -58,19 +58,19 @@ double HeatSimulator::compute_Dx(long i, long j, long k) {
   double a = i + 1 < this->x ? this->mesh->at((i + 1) * this->x + j * this->y + k) : 0;
   double b = 2 * this->mesh->at(i * this->x + j * this->y + k);
   double c = i - 1 >= 0 ? this->mesh->at((i - 1) * this->x + j * this->y + k) : 0;
-  return (a - b + c) / (i * i);
+  return (a - b + c) / (i * i + 1);
 }
 
 double HeatSimulator::compute_Dy(long i, long j, long k) {
   double a = j + 1 < this->y ? this->mesh->at(i * this->x + (j + 1) * this->y + k) : 0;
   double b = 2 * this->mesh->at(i * this->x + j * this->y + k);
   double c = j - 1 >= 0 ? this->mesh->at(i * this->x + (j - 1) * this->y + k) : 0;
-  return (a - b + c) / (j * j);
+  return (a - b + c) / (j * j + 1);
 }
 
 double HeatSimulator::compute_Dz(long i, long j, long k) {
   double a = k + 1 < this->z ? this->mesh->at(i * this->x + j * this->y + k + 1) : 0;
   double b = 2 * this->mesh->at(i * this->x + j * this->y + k);
   double c = k - 1 >= 0 ? this->mesh->at(i * this->x + j * this->y + k - 1) : 0;
-  return (a - b + c) / (k * k);
+  return (a - b + c) / (k * k + 1);
 }

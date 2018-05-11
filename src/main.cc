@@ -23,5 +23,8 @@ int main(int argc, char* argv[]) {
 
   auto result = simulator.simulate(nb_iter);
 
+  for (double a : *result)
+    std::cout << a << " ";
+
   std::cout << "Done." << std::endl;
 }
