@@ -12,12 +12,12 @@ class HeatSimulator {
     std::size_t y;
     std::size_t z;
 
-  public:
-    HeatSimulator(std::size_t x, std::size_t y, std::size_t z) {
-      this->x = x;
-      this->y = y;
-      this->z = z;
-    }
+    std::vector<double> *mesh;
 
+    double compute(std::size_t i, std::size_t j, std::size_t k);
+
+  public:
     HeatSimulator(std::string input_file);
+
+    std::vector<double>* simulate(unsigned max_iter);
 };
