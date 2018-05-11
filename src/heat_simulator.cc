@@ -6,9 +6,9 @@ HeatSimulator::HeatSimulator(std::string input_file) {
 
   std::ifstream input(input_file);
 
-  std::size_t x;
-  std::size_t y;
-  std::size_t z;
+  long x;
+  long y;
+  long z;
 
   double default_initial_value = 0;
 
@@ -32,9 +32,9 @@ HeatSimulator::HeatSimulator(std::string input_file) {
 std::vector<double>* HeatSimulator::simulate(unsigned max_iter) {
   auto new_mesh = new std::vector<double>(*this->mesh);
   for (unsigned n = 1; n < max_iter; n++) {
-    for (std::size_t i = 0; i < this->x; i++) {
-      for (std::size_t j = 0; j < this->y; j++) {
-        for (std::size_t k = 0; k < this->z; k++) {
+    for (long i = 0; i < this->x; i++) {
+      for (long j = 0; j < this->y; j++) {
+        for (long k = 0; k < this->z; k++) {
           new_mesh->at(i * this->x + j * this->y + k) = compute(i, j, k, n);
         }
       }
@@ -45,30 +45,30 @@ std::vector<double>* HeatSimulator::simulate(unsigned max_iter) {
 }
 
 
-double HeatSimulator::compute(std::size_t i, std::size_t j, std::size_t k, unsigned n) {
+double HeatSimulator::compute(long i, long j, long k, unsigned n) {
   double alpha = 2.;
   return this->mesh->at(i * this->x + j * this->y + k) + alpha * n * compute_D(i, j, k);
 }
 
-double HeatSimulator::compute_D(std::size_t i, std::size_t j, std::size_t k) {
+double HeatSimulator::compute_D(long i, long j, long k) {
   return compute_Dx(i, j, k) + compute_Dy(i, j, k) + compute_Dz(i, j, k);
 }
 
-double HeatSimulator::compute_Dx(std::size_t i, std::size_t j, std::size_t k) {
+double HeatSimulator::compute_Dx(long i, long j, long k) {
   double a = i + 1 < this->x ? this->mesh->at((i + 1) * this->x + j * this->y + k) : 0;
   double b = 2 * this->mesh->at(i * this->x + j * this->y + k);
   double c = i - 1 >= 0 ? this->mesh->at((i - 1) * this->x + j * this->y + k) : 0;
   return (a - b + c) / (i * i);
 }
 
-double HeatSimulator::compute_Dy(std::size_t i, std::size_t j, std::size_t k) {
+double HeatSimulator::compute_Dy(long i, long j, long k) {
   double a = j + 1 < this->y ? this->mesh->at(i * this->x + (j + 1) * this->y + k) : 0;
   double b = 2 * this->mesh->at(i * this->x + j * this->y + k);
   double c = j - 1 >= 0 ? this->mesh->at(i * this->x + (j - 1) * this->y + k) : 0;
   return (a - b + c) / (j * j);
 }
 
-double HeatSimulator::compute_Dz(std::size_t i, std::size_t j, std::size_t k) {
+double HeatSimulator::compute_Dz(long i, long j, long k) {
   double a = k + 1 < this->z ? this->mesh->at(i * this->x + j * this->y + k + 1) : 0;
   double b = 2 * this->mesh->at(i * this->x + j * this->y + k);
   double c = k - 1 >= 0 ? this->mesh->at(i * this->x + j * this->y + k - 1) : 0;
