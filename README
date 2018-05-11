@@ -1,0 +1,15 @@
+File format:
+
+first line describes the size of the mesh and the default initial value.
+
+all other lines describes every point that has a different initial value followed by this value
+
+size_x size_y size_z init_all
+
+x y z val
+x y z val
+. . . ...
+. . . ...
+. . . ...
+. . . ...
+
