@@ -35,7 +35,7 @@ std::vector<double>* HeatSimulator::simulate(unsigned max_iter) {
     for (long i = 0; i < this->x; i++) {
       for (long j = 0; j < this->y; j++) {
         for (long k = 0; k < this->z; k++) {
-          new_mesh->at(i * this->x + j * this->y + k) = compute(i, j, k, n);
+          new_mesh->at((i * this->x + j) * this->y + k) = compute(i, j, k, n);
         }
       }
     }
