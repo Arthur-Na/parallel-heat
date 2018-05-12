@@ -48,7 +48,7 @@ std::vector<double>* HeatSimulator::simulate(unsigned max_iter) {
 
 
 double HeatSimulator::compute(long i, long j, long k, unsigned n) {
-  double alpha = 1;
+  double alpha = 0.000019;
   return this->mesh->at((i * this->x + j) * this->y + k) + alpha * compute_D(i, j, k);
 }
 
