@@ -1,7 +1,8 @@
 #include "heat_simulator.hh"
 
 
-HeatSimulator::HeatSimulator(std::string input_file) {
+HeatSimulator::HeatSimulator(std::string input_file)
+{
   std::cout << "Reading input file..." << std::endl;
 
   std::ifstream input(input_file);
@@ -20,7 +21,8 @@ HeatSimulator::HeatSimulator(std::string input_file) {
 }
 
 
-std::vector<double> HeatSimulator::simulate(unsigned max_iter) {
+std::vector<double> HeatSimulator::simulate(unsigned max_iter)
+{
   auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
   for (unsigned n = 1; n < max_iter; n++)
   {
