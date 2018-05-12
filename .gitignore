@@ -1,3 +1,4 @@
 *.o
 *.swp
 heat-diffusion
+heat_diffusion

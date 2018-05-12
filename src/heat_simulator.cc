@@ -17,15 +17,15 @@ HeatSimulator::HeatSimulator(std::string input_file)
 
   double next_value;
   while(input >> x >> y >> z >> next_value)
-    mesh_.at(x * x_ +  y * y_ + z) = next_value;
+    mesh_.at((x * x_ +  y) * y_ + z) = next_value;
 }
 
 
 std::vector<double> HeatSimulator::simulate(unsigned max_iter)
 {
-  auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
   for (unsigned n = 1; n < max_iter; n++)
   {
+    auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
     for (long i = 0; i < x_; i++)
       for (long j = 0; j < y_; j++)
         for (long k = 0; k < z_; k++)
@@ -44,7 +44,10 @@ double HeatSimulator::compute(long i, long j, long k)
 
 double HeatSimulator::compute_D(long i, long j, long k)
 {
-  return compute_Dx(i, j, k) + compute_Dy(i, j, k) + compute_Dz(i, j, k);
+  if (i != 0 && i != x_ - 1 && j != 0 && j != y_ - 1 && k != 0 && k != z_ - 1)
+    return compute_Dx(i, j, k) + compute_Dy(i, j, k) + compute_Dz(i, j, k);
+  else
+    return 0;
 }
 
 double HeatSimulator::compute_Dx(long i, long j, long k)
