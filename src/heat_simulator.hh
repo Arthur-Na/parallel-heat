@@ -7,14 +7,14 @@
 
 
 class HeatSimulator {
-  protected:
-    long x;
-    long y;
-    long z;
+  private:
+    long x_;
+    long y_;
+    long z_;
 
-    std::vector<double> *mesh;
+    std::vector<double> mesh_;
 
-    double compute(long i, long j, long k, unsigned n);
+    double compute(long i, long j, long k);
     double compute_D(long i, long j, long k);
     double compute_Dx(long i, long j, long k);
     double compute_Dy(long i, long j, long k);
@@ -23,5 +23,5 @@ class HeatSimulator {
   public:
     HeatSimulator(std::string input_file);
 
-    std::vector<double>* simulate(unsigned max_iter);
+    std::vector<double> simulate(unsigned max_iter);
 };
