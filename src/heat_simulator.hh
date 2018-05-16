@@ -24,4 +24,5 @@ class HeatSimulator {
     HeatSimulator(std::string input_file);
 
     std::vector<double> simulate(unsigned max_iter);
+    std::vector<double> simulate_parallel(unsigned max_iter);
 };

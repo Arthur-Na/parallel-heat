@@ -1,5 +1,6 @@
 #include "heat_simulator.hh"
 
+#include <omp.h>
 
 HeatSimulator::HeatSimulator(std::string input_file)
 {
@@ -26,6 +27,21 @@ std::vector<double> HeatSimulator::simulate(unsigned max_iter)
   for (unsigned n = 1; n < max_iter; n++)
   {
     auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
+    for (long i = 0; i < x_; i++)
+      for (long j = 0; j < y_; j++)
+        for (long k = 0; k < z_; k++)
+          new_mesh.at((i * x_ + j) * y_ + k) = compute(i, j, k);
+    mesh_ = new_mesh;
+  }
+  return mesh_;
+}
+
+std::vector<double> HeatSimulator::simulate_parallel(unsigned max_iter)
+{
+  for (unsigned n = 1; n < max_iter; n++)
+  {
+    auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
+    #pragma omp parallel for
     for (long i = 0; i < x_; i++)
       for (long j = 0; j < y_; j++)
         for (long k = 0; k < z_; k++)
