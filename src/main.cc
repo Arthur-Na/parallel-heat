@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
   c_start = std::clock();
   t_start = std::chrono::high_resolution_clock::now();
-  auto result_para = simulator.simulate(nb_iter);
+  auto result_para = simulator.simulate_parallel(nb_iter);
   c_end = std::clock(); 
   t_end = std::chrono::high_resolution_clock::now();
   std::cout << "PARALLEL TIME\n"
