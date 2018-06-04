@@ -51,6 +51,18 @@ std::vector<double> HeatSimulator::simulate_parallel(unsigned max_iter)
   return mesh_;
 }
 
+std::vector<double> HeatSimulator::simulate_v2(unsigned max_iter)
+{
+  for (unsigned n = 0; n < max_iter; ++n)
+  {
+    auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
+    for (long index = 0; index < x_ * y_ * z_; ++index)
+      new_mesh.at(index) = compute_v2(index);
+    mesh_ = new_mesh;
+  }
+  return mesh_;
+}
+
 
 double HeatSimulator::compute(long i, long j, long k)
 {
@@ -58,10 +70,24 @@ double HeatSimulator::compute(long i, long j, long k)
   return mesh_.at((i * x_ + j) * y_ + k) + alpha * compute_D(i, j, k);
 }
 
+double HeatSimulator::compute_v2(long index)
+{
+  double alpha = 0.000019;
+  return mesh_.at(index) + alpha * compute_D_v2(index);
+}
+
 double HeatSimulator::compute_D(long i, long j, long k)
 {
   if (i != 0 && i != x_ - 1 && j != 0 && j != y_ - 1 && k != 0 && k != z_ - 1)
     return compute_Dx(i, j, k) + compute_Dy(i, j, k) + compute_Dz(i, j, k);
+  else
+    return 0;
+}
+
+double HeatSimulator::compute_D_v2(long index)
+{
+  if (index)
+    return compute_Dx_v2(index) + compute_Dy_v2(index) + compute_Dz_v2(index);
   else
     return 0;
 }
@@ -74,6 +100,14 @@ double HeatSimulator::compute_Dx(long i, long j, long k)
   return a - b + c;
 }
 
+double HeatSimulator::compute_Dx_v2(long index)
+{
+  double a = index;
+  double b = 0;
+  double c = 0;
+  return a - b + c;
+}
+
 double HeatSimulator::compute_Dy(long i, long j, long k)
 {
   double a = j + 1 < y_ ? mesh_.at((i * x_ + (j + 1)) * y_ + k) : 0;
@@ -82,10 +116,27 @@ double HeatSimulator::compute_Dy(long i, long j, long k)
   return a - b + c;
 }
 
+double HeatSimulator::compute_Dy_v2(long index)
+{
+  double a = index;
+  double b = 0;
+  double c = 0;
+  return a - b + c;
+}
+
+
 double HeatSimulator::compute_Dz(long i, long j, long k)
 {
   double a = k + 1 < z_ ? mesh_.at((i * x_ + j) * y_ + k + 1) : 0;
   double b = 2 * mesh_.at((i * x_ + j) * y_ + k);
   double c = k - 1 >= 0 ? mesh_.at((i * x_ + j) * y_ + k - 1) : 0;
+  return a - b + c;
+}
+
+double HeatSimulator::compute_Dz_v2(long index)
+{
+  double a = index;
+  double b = 0;
+  double c = 0;
   return a - b + c;
 }
