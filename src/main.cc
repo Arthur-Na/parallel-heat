@@ -41,10 +41,7 @@ int main(int argc, char* argv[]) {
             << std::chrono::duration<double, std::milli>(t_end-t_start).count()
             << " ms\n";
 
-  //for (double a : result_seq)
-  //  std::cout << a << " ";
-
-
+  
   c_start = std::clock();
   t_start = std::chrono::high_resolution_clock::now();
   auto result_para = simulator.simulate_parallel(nb_iter);
@@ -58,4 +55,6 @@ int main(int argc, char* argv[]) {
             << " ms\n";
 
   std::cout << "Done." << std::endl;
+  for (double a : result_seq)
+    std::cout << a << " ";
 }

@@ -3,8 +3,8 @@
 #include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <tuple>
 #include <vector>
-
 
 class HeatSimulator {
   private:
@@ -17,13 +17,12 @@ class HeatSimulator {
     double compute(long i, long j, long k);
     double compute_v2(long index);
     double compute_D(long i, long j, long k);
-    double compute_D_v2(long index);
     double compute_Dx(long i, long j, long k);
-    double compute_Dx_v2(long index);
     double compute_Dy(long i, long j, long k);
-    double compute_Dy_v2(long index);
     double compute_Dz(long i, long j, long k);
-    double compute_Dz_v2(long index);
+
+    std::tuple<int, int, int> get_coordinates(int index);
+    int get_index(int x, int y, int z);
 
   public:
     HeatSimulator(std::string input_file);
