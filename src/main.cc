@@ -32,7 +32,8 @@ int main(int argc, char* argv[]) {
 
   c_start = std::clock();
   t_start = std::chrono::high_resolution_clock::now();
-  auto result_seq = simulator.simulate(nb_iter);
+  //auto result_seq = simulator.simulate(nb_iter);
+  auto result_seq = simulator.simulate_v2(nb_iter);
   c_end = std::clock(); 
   t_end = std::chrono::high_resolution_clock::now();
   std::cout << std::fixed << std::setprecision(2) << "CPU time used: "

@@ -11,6 +11,7 @@ class HeatSimulator {
     long x_;
     long y_;
     long z_;
+    long max_value_;
 
     std::vector<double> mesh_;
 
@@ -21,8 +22,8 @@ class HeatSimulator {
     double compute_Dy(long i, long j, long k);
     double compute_Dz(long i, long j, long k);
 
-    std::tuple<int, int, int> get_coordinates(int index);
-    int get_index(int x, int y, int z);
+    std::tuple<long, long, long> get_coordinates(long index);
+    long get_index(long x, long y, long z);
 
   public:
     HeatSimulator(std::string input_file);
@@ -30,4 +31,5 @@ class HeatSimulator {
     std::vector<double> simulate(unsigned max_iter);
     std::vector<double> simulate_v2(unsigned max_iter);
     std::vector<double> simulate_parallel(unsigned max_iter);
+    std::vector<double> simulate_draw(unsigned max_iter);
 };

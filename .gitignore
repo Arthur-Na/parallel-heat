@@ -2,3 +2,4 @@
 *.swp
 heat-diffusion
 heat_diffusion
+build/

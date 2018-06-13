@@ -1,4 +1,5 @@
 #include "heat_simulator.hh"
+#include "viewer.hh"
 #include <omp.h>
 
 HeatSimulator::HeatSimulator(std::string input_file)
@@ -18,18 +19,20 @@ HeatSimulator::HeatSimulator(std::string input_file)
   double next_value;
   while(input >> x >> y >> z >> next_value)
     mesh_.at((x * x_ +  y) * y_ + z) = next_value;
+
+  max_value_ = *std::max_element(mesh_.begin(), mesh_.end());
 }
 
-std::tuple<int, int, int> HeatSimulator::get_coordinates(int index)
+std::tuple<long, long, long> HeatSimulator::get_coordinates(long index)
 {
-   int z = index / (x_ * y_);
+   long z= index / (x_ * y_);
    index -= (z * x_ * y_);
-   int x = index % x_;
-   int y = index / y_;
+   long x = index % x_;
+   long y = index / y_;
    return std::make_tuple(x, y, z);
 }
 
-int HeatSimulator::get_index(int x, int y, int z)
+long HeatSimulator::get_index(long x, long y, long z)
 {
   return (z * x_ * y_) + (y * x_) + x;
 }
@@ -63,6 +66,8 @@ std::vector<double> HeatSimulator::simulate_parallel(unsigned max_iter)
   return mesh_;
 }
 
+
+
 std::vector<double> HeatSimulator::simulate_v2(unsigned max_iter)
 {
   for (unsigned n = 0; n < max_iter; ++n)
@@ -71,6 +76,19 @@ std::vector<double> HeatSimulator::simulate_v2(unsigned max_iter)
     for (long index = 0; index < x_ * y_ * z_; ++index)
       new_mesh.at(index) = compute_v2(index);
     mesh_ = new_mesh;
+  }
+  return mesh_;
+}
+
+std::vector<double> HeatSimulator::simulate_draw(unsigned max_iter)
+{
+  for (unsigned n = 0; n < max_iter; ++n)
+  {
+    auto new_mesh = std::vector<double>(x_ * y_ * z_, 0);
+    for (long index = 0; index < x_ * y_ * z_; ++index)
+      new_mesh.at(index) = compute_v2(index);
+    mesh_ = new_mesh;
+    viewer(mesh_, x_, y_, z_, max_value_);
   }
   return mesh_;
 }
