@@ -23,15 +23,13 @@ void viewer(const std::vector<double>& vect, int size_x, int size_y, int size_z,
     double p[3];
     structured_grid->GetPoint(i, p);
 
-    double x_val = vect[p[0]];
-    double y_val = vect[p[1]];
-    double z_val = vect[p[2]];
+    int index = (p[2] * size_x * size_y) + (p[1] * size_x) + p[0];
+    double val = vect[index];
 
-    double dcol[3] = { x_val/max_val, y_val/max_val, z_val/max_val };
-
-    unsigned char color[3];
-    for (unsigned int j = 0; j < 3; ++j)
-      color[j] = static_cast<unsigned char>(255 * dcol[j]);
+    float coeff = val / max_val;
+    unsigned char red = static_cast<unsigned char>(255 * coeff);
+    unsigned char blue = static_cast<unsigned char>(255 * (1 - coeff));
+    unsigned char color[3] = { red, 0, blue };
 
 #if VTK_MAJOR_VERSION > 7
     colors->InsertNextTypedTuple(color);
@@ -56,7 +54,7 @@ void viewer(const std::vector<double>& vect, int size_x, int size_y, int size_z,
 
   vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
   actor->SetMapper(mapper);
-  actor->GetProperty()->SetPointSize(5);
+  actor->GetProperty()->SetPointSize(3);
 
   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
