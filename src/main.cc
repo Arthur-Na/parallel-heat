@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  std::streamsize ss = std::cout.precision();
   auto simulator = HeatSimulator(argv[1]);
 
   std::cout << "Computing..." << std::endl;
@@ -56,6 +57,13 @@ int main(int argc, char* argv[]) {
             << " ms\n";
 
   std::cout << "Done." << std::endl;
+  //std::cout << std::setprecision(15) << std::endl;
+  std::cout << std::setprecision(4) << std::endl;
   for (double a : result_seq)
     std::cout << a << " ";
+  std::cout << std::endl;
+
+  std::cout << simulator.validate_loop(nb_iter) << std::endl;
+  
+
 }

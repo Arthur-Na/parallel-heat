@@ -1,8 +1,12 @@
 #pragma once
 
+#include "vtk_viewer.hh"
+#include <cmath>
 #include <cstddef>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <tuple>
 #include <vector>
 
@@ -28,8 +32,16 @@ class HeatSimulator {
   public:
     HeatSimulator(std::string input_file);
 
+    int get_x() { return x_; }
+    int get_y() { return y_; }
+    int get_z() { return z_; }
+
     std::vector<double> simulate(unsigned max_iter);
     std::vector<double> simulate_v2(unsigned max_iter);
     std::vector<double> simulate_parallel(unsigned max_iter);
-    std::vector<double> simulate_draw(unsigned max_iter);
+    std::vector<double> simulate_draw(unsigned max_iter, vtk::VtkViewer& vtk);
+
+
+    unsigned validate_loop(unsigned max_iter);
+    std::tuple<long, long, long> test(long i, long j, long k);
 };
