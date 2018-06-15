@@ -11,8 +11,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(${VTK_USE_FILE})
 
-add_executable(parallel-heat-view src/main_view.cc src/heat_simulator.cc src/viewer.cc)
+add_executable(parallel-heat-view src/main_view.cc src/heat_simulator.cc src/vtk_viewer.cc)
 target_link_libraries(parallel-heat-view ${VTK_LIBRARIES})
 
-add_executable(heat_diffusion src/main.cc src/heat_simulator.cc src/viewer.cc)
+add_executable(heat_diffusion src/main.cc src/heat_simulator.cc src/vtk_viewer.cc)
 target_link_libraries(heat_diffusion ${VTK_LIBRARIES})
