@@ -39,25 +39,18 @@ namespace vtk
 
     renderer_->AddActor(actor_);
     renderer_->SetBackground(.0, .0, .0);
-
-    render_window_->Render();
-    //std::this_thread::sleep_for(std::chrono::seconds(1));
-    //render_window_interactor->Start();
-    render_window_interactor_->Initialize();
   }
 
   void VtkViewer::update(const std::vector<double>& vect, int size_x, int size_y, int size_z,
                          double max_val)
   {
-    std::cout << "iteration" << std::endl;
+    colors_->Initialize();
     for (unsigned int i = 0; i < structured_grid_->GetNumberOfPoints(); ++i)
     {
       double p[3];
       structured_grid_->GetPoint(i, p);
 
-      //int index = (p[2] * size_x * size_y) + (p[1] * size_x) + p[0];
       int index = (p[0] * size_x + p[1]) * size_y + p[2];
-          //new_mesh.at((i * x_ + j) * y_ + k) = compute(i, j, k);
       double val = vect[index];
 
       float coeff = val / max_val;
@@ -70,10 +63,11 @@ namespace vtk
 #else
       colors_->InsertNextTupleValue(color);
 #endif
+      colors_->Modified();
     }
-
     structured_grid_->GetPointData()->SetScalars(colors_);
     structured_grid_->Modified();
+
 #if VTK_MAJOR_VERSION <= 5
     geometry_filter_->SetInputConnection(structured_grid_->GetProducerPort());
 #else
@@ -81,6 +75,7 @@ namespace vtk
 #endif
     geometry_filter_->Modified();
     geometry_filter_->Update();
+
     mapper_->Modified();
     mapper_->Update();
     render_window_->Render();
@@ -88,7 +83,6 @@ namespace vtk
 
   void VtkViewer::show()
   {
-    std::cout << "end" << std::endl;
     render_window_interactor_->Start();
   }
 }
