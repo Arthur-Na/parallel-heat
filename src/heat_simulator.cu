@@ -70,11 +70,14 @@ __global__ void kernel_compute(float* mesh_in, int sx, int sy, int sz, float* me
   int idy = blockIdx.y * blockDim.y + threadIdx.y;
   int idz = blockIdx.z * blockDim.z + threadIdx.z;
 
-  const float alpha = 0.000019;
-  int index = (idx * sx + idy) * sy + idz; 
-  
-  //mesh_out[idx][idy][idz] = mesh_in[idx][idy][idz] + alpha * kernel_computeD(mesh_in, idx, idy, idz);
-  mesh_out[index] = mesh_in[index] + alpha * kernel_computeD(mesh_in, idx, idy, idz, sx, sy, sz);
+  if (idx < sx && idy < sy && idz < sz) 
+  {
+    const float alpha = 0.000019;
+    int index = (idx * sx + idy) * sy + idz; 
+    
+    //mesh_out[idx][idy][idz] = mesh_in[idx][idy][idz] + alpha * kernel_computeD(mesh_in, idx, idy, idz);
+    mesh_out[index] = mesh_in[index] + alpha * kernel_computeD(mesh_in, idx, idy, idz, sx, sy, sz);
+  }
 }
 
 
