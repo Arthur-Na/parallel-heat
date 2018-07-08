@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 static void HandleError(cudaError_t err, const char *file, int line)
 {
@@ -21,12 +22,11 @@ class HeatSimulator {
     long z_;
     float max_value_;
 
-    //std::vector<float> mesh_;
-    float* mesh_;
+    std::vector<float> mesh_;
+    //float* mesh_;
 
   public:
     HeatSimulator(std::string input_file);
-    ~HeatSimulator();
 
     int get_x() { return x_; }
     int get_y() { return y_; }

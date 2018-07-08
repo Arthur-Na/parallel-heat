@@ -21,5 +21,5 @@ target_link_libraries(parallel-heat ${VTK_LIBRARIES})
 
 add_executable(parallel-heat-cuda src/main.cu src/heat_simulator.cu)
 set_property(TARGET parallel-heat-cuda PROPERTY CUDA_STANDARD 11)
-list(APPEND CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_11")
+list(APPEND CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -G -g")
 #set(CUDA_PROPAGATE_HOST_FLAGS ON)

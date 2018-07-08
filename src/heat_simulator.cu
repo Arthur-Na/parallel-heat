@@ -10,24 +10,19 @@ HeatSimulator::HeatSimulator(std::string input_file)
 
   input >> x_ >> y_ >> z_ >> default_initial_value;
 
-  //mesh_ = std::vector<float>(x_ * y_ * z_, default_initial_value);
-  mesh_ = new float[x_ * y_ * z_];
-  for (unsigned i = 0; i < x_ * y_ * z_; ++i)
-    mesh_[i] = default_initial_value;
+  mesh_ = std::vector<float>(x_ * y_ * z_, default_initial_value);
+  //mesh_ = new float[x_ * y_ * z_];
+  //for (unsigned i = 0; i < x_ * y_ * z_; ++i)
+  //  mesh_[i] = default_initial_value;
 
   float next_value;
   while(input >> x >> y >> z >> next_value)
   {
-    //mesh_.at((x * x_ +  y) * y_ + z) = next_value;
-    mesh_[(x * x_ +  y) * y_ + z] = next_value;
+    mesh_.at((x * x_ +  y) * y_ + z) = next_value;
+    //mesh_[(x * x_ +  y) * y_ + z] = next_value;
   }
 
   //max_value_ = *std::max_element(mesh_.begin(), mesh_.end());
-}
-
-HeatSimulator::~HeatSimulator()
-{
-  delete mesh_;
 }
 
 __device__ float kernel_computeDX(float *mesh, int idx, int idy, int idz, int sx, int sy)
@@ -97,14 +92,14 @@ float* HeatSimulator::simulate_cuda(unsigned max_iter)
                        ((z_ + BLKZSIZE - 1) / BLKZSIZE));
 
 
-  float* new_mesh = mesh_;
+  float* new_mesh = mesh_.data();
   float* mesh_out;
   HANDLE_ERROR(cudaMalloc((void**) &mesh_out, SIZE * sizeof(float)));
+  float* iter_n;
+  HANDLE_ERROR(cudaMalloc((void**) &iter_n, SIZE * sizeof(float)));
   for (unsigned n = 1; n < max_iter; ++n)
   {
     //__constant__ float iter_n[SIZE];
-    float* iter_n;
-    HANDLE_ERROR(cudaMalloc((void**) &iter_n, SIZE * sizeof(float)));
     HANDLE_ERROR(cudaMemcpy(iter_n, new_mesh, SIZE * sizeof(float), cudaMemcpyHostToDevice));
     //HANDLE_ERROR(cudaMemcpyToSymbol(iter_n, new_mesh, SIZE * sizeof(float)));
 
@@ -114,5 +109,6 @@ float* HeatSimulator::simulate_cuda(unsigned max_iter)
   }
 
   HANDLE_ERROR(cudaFree(mesh_out));
+  HANDLE_ERROR(cudaFree(iter_n));
   return new_mesh;
 }
