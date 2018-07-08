@@ -72,7 +72,6 @@ void viewer(const std::vector<double>& vect, int size_x, int size_y, int size_z,
   renderer->SetBackground(.0, .0, .0);
 
   render_window->Render();
-  //std::this_thread::sleep_for(std::chrono::seconds(1));
   render_window_interactor->Start();
   render_window_interactor->Initialize();
 }

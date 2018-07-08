@@ -11,18 +11,12 @@ HeatSimulator::HeatSimulator(std::string input_file)
   input >> x_ >> y_ >> z_ >> default_initial_value;
 
   mesh_ = std::vector<float>(x_ * y_ * z_, default_initial_value);
-  //mesh_ = new float[x_ * y_ * z_];
-  //for (unsigned i = 0; i < x_ * y_ * z_; ++i)
-  //  mesh_[i] = default_initial_value;
 
   float next_value;
   while(input >> x >> y >> z >> next_value)
   {
     mesh_.at((x * x_ +  y) * y_ + z) = next_value;
-    //mesh_[(x * x_ +  y) * y_ + z] = next_value;
   }
-
-  //max_value_ = *std::max_element(mesh_.begin(), mesh_.end());
 }
 
 __device__ float kernel_computeDX(float *mesh, int idx, int idy, int idz, int sx, int sy)

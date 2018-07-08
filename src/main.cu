@@ -39,10 +39,10 @@ int main(int argc, char** argv)
   HANDLE_ERROR(cudaEventDestroy(start));
   HANDLE_ERROR(cudaEventDestroy(stop));
 
-  //std::cout << std::setprecision(2);
-//  for (unsigned i = 0; i < simulator.get_size(); ++i)
-//    std::cout << std::fixed << std::setprecision(2) << res[i] << " ";
-//  std::cout << std::endl;
+  std::ofstream output_file;
+  output_file.open(argv[2]);
+  for (unsigned i = 0; i < simulator.get_size(); ++i)
+      output_file << res[i] << " ";
 
   return 0;
 }

@@ -17,7 +17,6 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  //auto renderer = build_renderer();
   auto vtk = vtk::VtkViewer();
   auto simulator = HeatSimulator(argv[1]);
   vtk.init(simulator.get_x(), simulator.get_y(), simulator.get_z());

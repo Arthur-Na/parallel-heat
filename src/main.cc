@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
 
   c_start = std::clock();
   t_start = std::chrono::high_resolution_clock::now();
-  //auto result_seq = simulator.simulate(nb_iter);
   auto result_seq = simulator.simulate_v2(nb_iter);
   c_end = std::clock(); 
   t_end = std::chrono::high_resolution_clock::now();
@@ -57,13 +56,5 @@ int main(int argc, char* argv[]) {
             << " ms\n";
 
   std::cout << "Done." << std::endl;
-  //std::cout << std::setprecision(15) << std::endl;
   std::cout << std::setprecision(2) << std::endl;
-  //for (double a : result_seq)
-    //std::cout << a << " ";
-  //std::cout << std::endl;
-
-  //std::cout << simulator.validate_loop(nb_iter) << std::endl;
-  
-
 }
