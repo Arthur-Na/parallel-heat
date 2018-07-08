@@ -30,17 +30,6 @@ HeatSimulator::~HeatSimulator()
   delete mesh_;
 }
 
-static void HandleError(cudaError_t err, const char *file, int line)
-{
-  if (err != cudaSuccess)
-  {
-    printf("%s in %s at line %d\n", cudaGetErrorString(err), file, line);
-    exit( EXIT_FAILURE );
-  }
-}
-
-#define HANDLE_ERROR( err ) (HandleError(err, __FILE__, __LINE__))
-
 __device__ float kernel_computeDX(float *mesh, int idx, int idy, int idz, int sx, int sy)
 {
   float a = idx + 1 < sx ? mesh[((idx + 1) * sx + idy) * sy + idz] : 0;
@@ -107,16 +96,18 @@ float* HeatSimulator::simulate_cuda(unsigned max_iter)
 
   float* new_mesh = mesh_;
   float* mesh_out;
-  HANDLE_ERROR(cudaMalloc((void**) &mesh_out, SIZE));
+  HANDLE_ERROR(cudaMalloc((void**) &mesh_out, SIZE * sizeof(float)));
   for (unsigned n = 1; n < max_iter; ++n)
   {
     //__constant__ float iter_n[SIZE];
-    //float iter_n[SIZE];
-    HANDLE_ERROR(cudaMemcpyToSymbol(iter_n, new_mesh, SIZE * sizeof(float)));
+    float* iter_n;
+    HANDLE_ERROR(cudaMalloc((void**) &iter_n, SIZE * sizeof(float)));
+    HANDLE_ERROR(cudaMemcpy(iter_n, new_mesh, SIZE * sizeof(float), cudaMemcpyHostToDevice));
+    //HANDLE_ERROR(cudaMemcpyToSymbol(iter_n, new_mesh, SIZE * sizeof(float)));
 
     kernel_compute<<<grid_size, block_size>>>(iter_n, x_, y_, z_, mesh_out);
     
-    HANDLE_ERROR(cudaMemcpy(mesh_out, new_mesh, SIZE, cudaMemcpyDeviceToHost));
+    HANDLE_ERROR(cudaMemcpy(new_mesh, mesh_out, SIZE * sizeof(float), cudaMemcpyDeviceToHost));
   }
 
   HANDLE_ERROR(cudaFree(mesh_out));

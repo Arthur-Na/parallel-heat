@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Done." << std::endl;
   //std::cout << std::setprecision(15) << std::endl;
-  std::cout << std::setprecision(4) << std::endl;
+  std::cout << std::setprecision(2) << std::endl;
   for (double a : result_seq)
     std::cout << a << " ";
   std::cout << std::endl;
