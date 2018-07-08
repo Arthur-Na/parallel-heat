@@ -23,7 +23,6 @@ class HeatSimulator {
     float max_value_;
 
     std::vector<float> mesh_;
-    //float* mesh_;
 
   public:
     HeatSimulator(std::string input_file);

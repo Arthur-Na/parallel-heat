@@ -31,7 +31,7 @@ namespace vtk
     public:
       VtkViewer();
       void init(int, int, int);
-      void update(const std::vector<double>&, int, int, int, double);
+      void update(const std::vector<double>&, int, int, double);
       void show();
   
     private:

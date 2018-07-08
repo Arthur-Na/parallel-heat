@@ -22,7 +22,6 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  std::streamsize ss = std::cout.precision();
   auto simulator = HeatSimulator(argv[1]);
 
   std::cout << "Computing..." << std::endl;
@@ -57,4 +56,9 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Done." << std::endl;
   std::cout << std::setprecision(2) << std::endl;
+
+  std::ofstream output_file;
+  output_file.open(argv[2]);
+  for (double val : result_para)
+      output_file << val << " ";
 }

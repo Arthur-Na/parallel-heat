@@ -25,5 +25,10 @@ int main(int argc, char* argv[]) {
 
   auto res = simulator.simulate_draw(nb_iter, vtk);
 
+  std::ofstream output_file;
+  output_file.open(argv[2]);
+  for (double val : res)
+      output_file << val << " ";
+
   vtk.show();
 }

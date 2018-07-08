@@ -40,8 +40,4 @@ class HeatSimulator {
     std::vector<double> simulate_v2(unsigned max_iter);
     std::vector<double> simulate_parallel(unsigned max_iter);
     std::vector<double> simulate_draw(unsigned max_iter, vtk::VtkViewer& vtk);
-
-
-    unsigned validate_loop(unsigned max_iter);
-    std::tuple<long, long, long> test(long i, long j, long k);
 };

@@ -41,8 +41,7 @@ namespace vtk
     renderer_->SetBackground(.0, .0, .0);
   }
 
-  void VtkViewer::update(const std::vector<double>& vect, int size_x, int size_y, int size_z,
-                         double max_val)
+  void VtkViewer::update(const std::vector<double>& vect, int size_x, int size_y, double max_val)
   {
     colors_->Initialize();
     for (unsigned int i = 0; i < structured_grid_->GetNumberOfPoints(); ++i)
