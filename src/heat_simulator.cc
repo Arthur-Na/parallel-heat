@@ -164,7 +164,8 @@ double HeatSimulator::compute(long i, long j, long k)
 
 double HeatSimulator::compute_v2(long index)
 {
-  double alpha = 0.000019;
+  //double alpha = 0.000019;
+  double alpha = 0.0019;
   std::tuple<long, long, long> coords = get_coordinates(index);
   long i = std::get<0>(coords);
   long j = std::get<1>(coords);
