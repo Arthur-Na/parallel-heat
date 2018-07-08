@@ -65,24 +65,32 @@ __global__ void kernel_compute(float* mesh_in, int sx, int sy, int sz, float* me
   int idy = blockIdx.y * blockDim.y + threadIdx.y;
   int idz = blockIdx.z * blockDim.z + threadIdx.z;
 
-  if (idx < sx && idy < sy && idz < sz) 
+  if (idx < sx && idy < sy && idz < sz)
   {
     const float alpha = 0.000019;
     int index = (idx * sx + idy) * sy + idz; 
     
-    //mesh_out[idx][idy][idz] = mesh_in[idx][idy][idz] + alpha * kernel_computeD(mesh_in, idx, idy, idz);
     mesh_out[index] = mesh_in[index] + alpha * kernel_computeD(mesh_in, idx, idy, idz, sx, sy, sz);
   }
 }
 
+__global__ void kernel_copy(float* in, float* out, int sx, int sy, int sz)
+{
+  int idx = blockIdx.x * blockDim.x + threadIdx.x;
+  int idy = blockIdx.y * blockDim.y + threadIdx.y;
+  int idz = blockIdx.z * blockDim.z + threadIdx.z;
 
-#define BLKXSIZE 32
+  if (idx < sx && idy < sy && idz < sz)
+  {
+    int index = (idx * sx + idy) * sy + idz; 
+    out[index] = in[index];
+  }
+}
+
+#define BLKXSIZE 8
 #define BLKYSIZE 8
-#define BLKZSIZE 4
+#define BLKZSIZE 16
 
-//__constant__ float* iter_n;
-
-//void HeatSimulator::simulate_cuda(unsigned max_iter, float* mesh_ref, float *mesh_out)
 float* HeatSimulator::simulate_cuda(unsigned max_iter)
 {
   int SIZE = x_ * y_ * z_;
@@ -97,16 +105,15 @@ float* HeatSimulator::simulate_cuda(unsigned max_iter)
   HANDLE_ERROR(cudaMalloc((void**) &mesh_out, SIZE * sizeof(float)));
   float* iter_n;
   HANDLE_ERROR(cudaMalloc((void**) &iter_n, SIZE * sizeof(float)));
+  HANDLE_ERROR(cudaMemcpy(iter_n, new_mesh, SIZE * sizeof(float), cudaMemcpyHostToDevice));
+
   for (unsigned n = 1; n < max_iter; ++n)
   {
-    //__constant__ float iter_n[SIZE];
-    HANDLE_ERROR(cudaMemcpy(iter_n, new_mesh, SIZE * sizeof(float), cudaMemcpyHostToDevice));
-    //HANDLE_ERROR(cudaMemcpyToSymbol(iter_n, new_mesh, SIZE * sizeof(float)));
-
     kernel_compute<<<grid_size, block_size>>>(iter_n, x_, y_, z_, mesh_out);
-    
-    HANDLE_ERROR(cudaMemcpy(new_mesh, mesh_out, SIZE * sizeof(float), cudaMemcpyDeviceToHost));
+    kernel_copy<<<grid_size, block_size>>>(mesh_out, iter_n, x_, y_, z_);
   }
+
+  HANDLE_ERROR(cudaMemcpy(new_mesh, mesh_out, SIZE * sizeof(float), cudaMemcpyDeviceToHost));
 
   HANDLE_ERROR(cudaFree(mesh_out));
   HANDLE_ERROR(cudaFree(iter_n));

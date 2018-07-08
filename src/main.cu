@@ -40,9 +40,9 @@ int main(int argc, char** argv)
   HANDLE_ERROR(cudaEventDestroy(stop));
 
   //std::cout << std::setprecision(2);
-  for (unsigned i = 0; i < simulator.get_size(); ++i)
-    std::cout << std::fixed << std::setprecision(2) << res[i] << " ";
-  std::cout << std::endl;
+//  for (unsigned i = 0; i < simulator.get_size(); ++i)
+//    std::cout << std::fixed << std::setprecision(2) << res[i] << " ";
+//  std::cout << std::endl;
 
   return 0;
 }
