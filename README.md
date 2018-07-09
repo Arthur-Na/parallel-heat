@@ -13,6 +13,7 @@ In order to launch this project, you'll need:
 * An nVidia graphic card
 * nvcc version 8.1 or higher
 * gcc version 8.1 or higher
+* vtk version 8.1 or higher ([VTK Installation](https://www.vtk.org/Wiki/VTK/Configure_and_Build))
 
 ### Installation
 
