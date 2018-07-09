@@ -52,7 +52,7 @@ To launch the project and see a visual output, use the following command:
 cd build
 ./parallel-heat-view input_file output_file nb_iter
 ```
-If you want to use an nVidia graphic card to run this program, you'll might need to use the following command:
+If you want to use an nVidia graphic card to run this program, you might need to use the following command:
 ```
 cd build
 sudo optirun ./parallel-heat-view input_file output_file nb_iter
